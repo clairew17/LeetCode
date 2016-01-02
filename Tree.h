@@ -1,4 +1,4 @@
-#include"header.h"
+//#include"../CC/header.h"
 
 void PrintGivenLevel(TreeNode* root,int level);
 void PrintByLevel(TreeNode* root);
@@ -187,32 +187,10 @@ void PostOrderTranversal(TreeNode* root){
 void InOrderTranversal(TreeNode* root){
 	if(root==NULL)return;
 	stack<TreeNode*>TreeStack;
-<<<<<<< HEAD
 	TreeNode *node=root;
 
 	//push all left child
-	while(node){
-		TreeStack.push(node);
-		node = node->left;
-	}
 
-	while(!TreeStack.empty())
-	{
-		//print & pop
-		node = TreeStack.top();
-		TreeStack.pop();
-		cout << node->val << ",";
-
-		//acces right child
-		node = node->right;
-
-		while(node){
-			TreeStack.push(node);
-			node = node->left;
-=======
-	//if(root->right)TreeStack.push(root->right);
-	if(root)TreeStack.push(root);
-	TreeNode *node=root;
     while(node){
         if(node->left)TreeStack.push(node->left);
         node = node->left;
@@ -228,13 +206,12 @@ void InOrderTranversal(TreeNode* root){
                 node = node->left;
                 if(node)TreeStack.push(node);
             }
->>>>>>> 35f2d3369fe369edf9d8366a8d53484153ce7c04
 		}
 	}
 
 }
 
-vector<int> in_order(TreeNode *root) {
+vector<int> in_order(TreeNode *root){
     stack<TreeNode*> st;
     vector<int> ar;
     if (root == NULL) return ar;
@@ -283,8 +260,10 @@ TreeNode* GenerateTree(vector<int> &nums,int start, int end)
 	//cout << start <<","<< end << endl;
 	if(start>=end)return NULL;
 	int mid = (start+end)/2;
-	TreeNode* node = new TreeNode(nums[mid]);
-
+	
+	TreeNode* node = NULL;
+	//if(nums[mid]==null)return node;
+	node = new TreeNode(nums[mid]);
 	node->left = GenerateTree(nums,start,mid);
 	node->right = GenerateTree(nums,mid+1,end);
 
