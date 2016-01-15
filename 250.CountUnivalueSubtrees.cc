@@ -2,9 +2,6 @@
 #include"../CC/header.h"
 #include"Tree.h"
 
-int countUnivalSubtrees(TreeNode* root) {
-	if(root==NULL)return 0;
-}
 
 
 int countUnivalSubtrees(TreeNode* root) {
