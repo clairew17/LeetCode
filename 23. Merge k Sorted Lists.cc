@@ -1,22 +1,30 @@
-23. Merge k Sorted Lists.cc
+//23. Merge k Sorted Lists.cc
 struct compare{
-    bool operator()(const ListNode*l1, const ListNode *l2){
+    bool operator()(ListNode*l1, ListNode*l2)
+    {
         return l1->val > l2->val;
+        //ascending order
     }
 };
-    ListNode* mergeKLists(vector<ListNode*>& lists) {
-        priority_queue<ListNode*, vector<ListNode*>, compare>pq;
-        for(auto l:lists){
-            if(l)pq.push(l);//need to check the status of l
-        }
-        if(pq.empty())return NULL;
-        ListNode *res = pq.top();pq.pop();
-        if(res->next)pq.push(res->next);
-        ListNode *tail = res;
-        while(!pq.empty()){
-            tail->next = pq.top();pq.pop();
-            tail = tail->next;
-            if(tail->next)pq.push(tail->next);
-        }
-        return res;
+
+
+ListNode* mergeKLists(vector<ListNode*>& lists) {
+    priority_queue<ListNode*, vector<ListNode*>, compare>pq;
+    for(auto l:lists){
+        if(l)pq.push(l);
     }
+    if(pq.empty())return NULL;
+    ListNode*res = new ListNode(0), *cur=res;
+    
+    while(!pq.empty()){
+        //insert node of pq top
+        auto temp = pq.top();pq.pop();
+        cur->next = temp;
+        cur = cur->next;
+        
+        //restore the remaining part of list
+        auto next = temp->next;
+        if(next)pq.push(next);
+    }
+    return res->next;
+}
