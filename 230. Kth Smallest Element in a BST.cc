@@ -11,7 +11,6 @@ int kthSmallest(TreeNode* root, int k) {
     }
     void inorderTraverse(TreeNode* root, int k, int &kVal, int &count){
         if(root==NULL || count==k)return;
-        
         if(root->left)inorderTraverse(root->left, k, kVal, count);
         if(count == k)return;
         
