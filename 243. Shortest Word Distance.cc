@@ -2,23 +2,14 @@
 class Solution {
 public:
     int shortestDistance(vector<string>& words, string word1, string word2) {
-        map<string, vector<int>>m;
-        if(word1==word2)return 0;
-        int pos1=-1, pos2=-1, res= INT_MAX;
-        for(int i=0;i<words.size();i++){
-            string w = words[i];
-            if(w==word1){
-                if(pos2!=-1)res = min(res, i-pos2);
-                pos1=i;
-            }
-            if(w==word2){
-                pos2=i;
-                if(pos1!=-1)res = min(res, i-pos1);
-            }
-            
+        int n = words.size();
+        int w1 = -1, w2 = -1;
+        int dis = n;
+        for(int i=0;i<n;i++){
+            if(words[i] == word1)w1 = i; 
+            if(words[i] == word2)w2 = i;
+            if(w1!=-1 && w2!= -1)dis = min(dis, abs(w2-w1));
         }
-       
-        return res;
-        
+        return dis;
     }
 };

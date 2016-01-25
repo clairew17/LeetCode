@@ -6,7 +6,7 @@ string getPermutation(int n, int k) {
     string s(n,'0');
     for(i=1;i<=n;i++){
         f*=i;
-        s[i-1]+=i; // make s become 1234...n
+        if(i<n)s[i]+=i; // make s become 01234...n-1
     }
     for(i=0,k--;i<n;i++){
         f/=n-i;
