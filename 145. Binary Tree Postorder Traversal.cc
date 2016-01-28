@@ -14,24 +14,42 @@ vector<int> postorderTraversalRecurse(TreeNode* root) {
 }
 
 
-vector<int> postorderTraversal(TreeNode* root) {
-    stack<TreeNode*> nodeStack;
-    vector<int>res;
-    if(root==NULL)return res;
-    nodeStack.push(root);
-    while(!nodeStack.empty()){
-        TreeNode *node = nodeStack.top();
-        res.push_back(node->val);
-        nodeStack.pop();
 
-        if(node->left)nodeStack.push(node->left);
-        if(node->right)nodeStack.push(node->right);
-
+class Solution {//recursion
+public:
+    void helper(TreeNode* root, vector<int>&res){
+        if(root==NULL)return;
+        helper(root->left, res);
+        helper(root->right, res);
+        res.push_back(root->val);
     }
-    reverse(res.begin(), res.end());
-    return res;
-}
+    vector<int> postorderTraversal(TreeNode* root) {
+        vector<int>res;
+        helper(root, res);
+        return res;
+    }
+};
 
+class Solution {//iterative using stack
+public:
+    vector<int> postorderTraversal(TreeNode* root) {
+        stack<TreeNode*>s;
+        vector<int>res;
+        if(root==NULL)return res;
+        s.push(root);
+        //use stack to access the right path first
+        while(!s.empty()){
+            //access stack.top: the right most node
+            auto p = s.top();s.pop();
+            res.push_back(p->val);
+            if(p->left)s.push(p->left);
+            if(p->right)s.push(p->right);
+        }
+        //reverse to get post order
+        reverse(res.begin(),res.end());
+        return res;
+    }
+};
 int main(){
 	int n = 5;
 	TreeNode* root = CreateTree(n);
