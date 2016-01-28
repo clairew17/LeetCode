@@ -1,56 +1,87 @@
 //297. Serialize and Deserialize Binary Tree.cc
 
 #include"../CC/Tree.h"
+/*
+
+297. Serialize and Deserialize Binary Tree
 
 
-string serialize(TreeNode* root) {
-	//BFS traversal
-    string str;
-    queue<TreeNode*> node_q;
-    node_q.push(root);
 
-    TreeNode* cur;
-    while(!node_q.empty()){
-    	cur = node_q.front();
-    	node_q.pop();
 
-    	if(cur==NULL){
-    		str += "#,";
-    	}else{
-    		str += (to_string(cur->val)+",");
-    		node_q.push(cur->left);
-    		node_q.push(cur->right);
-    	}
+*/
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Codec {
+public:
+
+    // Encodes a tree to a single string.
+    // use BFS, if node is not NULL "val,"; else add "#,"
+    string serialize(TreeNode* root) {
+        string res;
+        //if(root==NULL)return res;
+        
+        queue<TreeNode*>q;
+        q.push(root);
+        int cnt = q.size();
+        
+        while(cnt>0)
+        {
+            cnt--;
+            auto node = q.front();q.pop();
+            if(node != NULL){
+                res += to_string(node->val)+',';
+                q.push(node->left);
+                q.push(node->right);
+            }else{
+                res += "#,";
+            }
+            
+            if(cnt==0)
+            {
+                cnt = q.size();
+            }
+        }
+        
+        return res;
     }
 
-    cout <<"Serialized Tree:\t"<< str << endl;
-    return str;
-}
-TreeNode* deserialize(string str){
-	TreeNode *root = NULL, **cur;
-	if(str.size()==0)return 0;
-	queue<TreeNode**>node_q;
-	node_q.push(&root);
-	auto found = str.find_first_of(',');
-	int val; 
-	while(found != string::npos){
-		cur = node_q.front();
-		node_q.pop();
-		if(str[0]=='#'){
-			str = str.substr(2);
-		}else{
-			val = stoi(str.substr(0,found));
-			str = str.substr(found+1);
-			*cur = new TreeNode(val);
-			node_q.push(&((*cur)->left));
-			node_q.push(&((*cur)->right));
+    // Decodes your encoded data to tree.
+    TreeNode* deserialize(string str){
+        cout << str << endl;
+	    TreeNode *root = NULL;
+	    queue<TreeNode**>q;
+	    q.push(&root);
+	    
+	    
+        auto found = str.find_first_of(',');
+        while(found != string::npos)
+        {
+            auto cur = q.front();q.pop();
+            if(str[0]!='#')
+            {
+                int x = stoi(str.substr(0, found));
+                *cur = new TreeNode(x);
+                q.push(&((*cur)->left));
+                q.push(&((*cur)->right));
+            }
+            str = str.substr(found+1);
+            found = str.find_first_of(',');
+        }
+        return root;
+    }
+};
 
-		}
-		found = str.find_first_of(',');
-	}
-	return root;
-
-}
+// Your Codec object will be instantiated and called as such:
+// Codec codec;
+// codec.deserialize(codec.serialize(root));
 
 int main(){
 	srand(time(NULL));

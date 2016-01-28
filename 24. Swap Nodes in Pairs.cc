@@ -1,15 +1,27 @@
 //24. Swap Nodes in Pairs.cc
 #include"../CC/header.h"
 
-ListNode* swapPairs(ListNode* head){
-	if(head==NULL || head->next == NULL)return head;
-	auto new_head = head->next;
-	auto temp = head->next->next;
-	new_head->next = head;
-
-	head->next = swapPairs(temp);
-	return new_head;
-}
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* swapPairs(ListNode* head) {
+        if(head == NULL || head->next==NULL)return head;
+        ListNode*temp = head->next->next;
+        ListNode *newhead = head->next;
+        
+        newhead->next = head;
+        head->next = swapPairs(temp);
+        
+        return newhead;
+    }
+};
 
 int main(int argc, char *argv[]){
     int len = stoi(argv[1]);

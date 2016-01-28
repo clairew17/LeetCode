@@ -4,40 +4,48 @@
 
 class LRUCache{
 private:
-    size_t cache_sz;
-    // key: value use key to index map
-    list<pair<int, int>>m_list;
-    // key: iter
-    map<int, list<pair<int, int>>::iterator>m_map;
+    int sz;
+    //key:val
+    list<pair<int, int>>data_list;
+    //key:iterator
+    map<int, list<pair<int, int>>::iterator>m;
 public:
-    LRUCache(size_t capacity) {
-        cache_sz = capacity;
+    LRUCache(int capacity) {
+        sz = capacity;
     }
     
     int get(int key) {
-    	auto found = m_map.find(key);
-    	if(found == m_map.end())return -1;
-    	m_list.splice(m_list.begin(), m_list, found->second);
-    	//cout << found->second->second << endl;
-    	return found->second->second;
+        auto found = m.find(key);
+        if(found==m.end())
+        {
+            return -1;
+        }else{
+            //insert to head
+            data_list.splice(data_list.begin(), data_list, found->second);
+            return found->second->second;
+        }
     }
     
-    void set(int key, int value) {
-        auto found = m_map.find(key);
-        //hit
-        if(found != m_map.end()){
-        	m_list.splice(m_list.begin(), m_list, found->second);
-        	found->second->second = value;
-        	//must return
-        	return;
+    void set(int key, int value)
+    {
+        if(m.find(key)==m.end())//miss
+        {
+            if(m.size()==sz){//delete the last
+                auto p = data_list.back();
+                m.erase(p.first);
+                data_list.pop_back();
+            }
+            //insert to head
+            data_list.emplace_front(key,value);
+            m[key] = data_list.begin();
+        }else
+        {
+            //update value
+            auto it = m[key];
+            it->second = value;
+            //insert to head
+            data_list.splice(data_list.begin(), data_list, it);
         }
-        //miss
-        if(m_map.size()==cache_sz){
-        	m_map.erase(m_list.back().first);
-        	m_list.pop_back();
-        }
-        m_list.emplace_front(key,value);
-        m_map[key]=m_list.begin();
     }
 };
 

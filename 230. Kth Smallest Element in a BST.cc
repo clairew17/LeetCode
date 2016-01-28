@@ -3,53 +3,80 @@
 
 
 //inorder tranversal
-int kthSmallest(TreeNode* root, int k) {
-        int kVal;
-        int count = 0;
-        inorderTraverse(root,k, kVal, count);
-        return kVal;
-    }
-    void inorderTraverse(TreeNode* root, int k, int &kVal, int &count){
-        if(root==NULL || count==k)return;
-        if(root->left)inorderTraverse(root->left, k, kVal, count);
-        if(count == k)return;
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+
+    
+    void InorderTraverse(TreeNode* root, int k, int &val, int &cnt)
+    {
+        if(root==NULL || cnt==k)return;
+        //access left tree
+        InorderTraverse(root->left, k, val, cnt);
+        if(cnt == k)return;
         
-        //add root
-        count++;
-        if(count == k){
-            kVal = root->val;
+        //access current node 
+        cnt++;
+        if(cnt == k){
+            val=root->val;
             return;
         }
         
-        if(root->right)inorderTraverse(root->right, k, kVal, count);
-}
+        //access right node
+        InorderTraverse(root->right, k, val, cnt);
+        
+    }
+    int kthSmallest(TreeNode* root, int k)
+    {
+        int cnt = 0;
+        int val = -1;
+        InorderTraverse(root, k, val, cnt);
+        return val;
+    }
+};
 
 
 //using stack
 
-int kthSmallest(TreeNode* root, int k) {
-    stack<TreeNode*>s;
-    if(root==NULL)return -1;
-    TreeNode*node=root;
-    while(node){
-        s.push(node);
-        node = node->left;
-    }
-    while(k>0 && !s.empty()){
-        node = s.top();s.pop();
-        k--;
-        if(k==0)return node->val;
+class Solution {
+public:
+    int kthSmallest(TreeNode* root, int k) {
+        stack<TreeNode*>s;
+        if(root==NULL)return -1;
         
-        //access the right tree
-        TreeNode *r=node->right;
-        while(r){
-            s.push(r);
-            r = r->left;
+        //access all left tree
+        auto cur = root;
+        while(cur)
+        {
+            s.push(cur);
+            cur = cur->left;
         }
+        
+        while(k>0 && !s.empty())
+        {
+            auto cur = s.top();s.pop();
+            k--;
+            if(k==0)return cur->val;
+            //access the right child of current node 
+            auto r = cur->right;
+            while(r){//acces left tree
+                s.push(r);
+                r = r->left;
+            }
+        }
+        
+        return -1;
+        
     }
-    
-    return -1;
-}
+};
 
 
 

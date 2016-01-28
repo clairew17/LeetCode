@@ -22,6 +22,9 @@ ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
 ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
     if(headA==NULL||headB==NULL)return NULL;
     ListNode *p1 = headA, *p2 = headB;
+    
+    if(p1==NULL||p2==NULL)return NULL;
+
     while(p1 && p2 && p1!=p2){
         p1 = p1->next;
         p2 = p2->next;
@@ -32,7 +35,6 @@ ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
         if(p1==NULL) p1 = headB;
         if(p2==NULL) p2 = headA;
     }
-    //if(p1==NULL||p2==NULL)return NULL;
     return p1;
 }
 

@@ -2,7 +2,7 @@
 #include"../CC/header.h"
 
 //directions to access four-neighbors
-vector<vector<int>>dir={{0,1},{0,-1},{1,0},{-1,0}};
+    vector<pair<int,int>>dir={{0,1},{0,-1},{1,0},{-1,0}};
 
 void wallsAndGates(vector<vector<int>>& rooms) {
     int m = rooms.size();if(m<1)return;

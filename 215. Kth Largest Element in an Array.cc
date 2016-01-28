@@ -23,7 +23,23 @@ int findKthLargest2(vector<int>& nums, int k){
 	return pq.top();
 }
 
-
+class Solution {
+public:
+struct compare
+{
+    bool operator()(int x, int y){return x>y;}//decending order
+};
+    int findKthLargest(vector<int>& nums, int k) {
+        if(k>nums.size())return -1;
+        priority_queue<int, vector<int>, compare>pq;//front:smallest
+        for(auto n:nums)
+        {
+            if(pq.size()<k || pq.top()<n)pq.push(n);
+            if(pq.size()>k)pq.pop();
+        }
+        return pq.top();
+    }
+};
 //comparator of ascending order
 struct compare{
 	bool operator()(int x, int y){

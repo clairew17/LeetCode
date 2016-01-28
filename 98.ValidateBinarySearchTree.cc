@@ -1,23 +1,27 @@
-//98.ValidateBinarySearchTree.cc
-/*
-
-Given a binary tree, determine if it is a valid binary search tree (BST).
-
-Assume a BST is defined as follows:
-
-The left subtree of a node contains only nodes with keys less than the node's key.
-The right subtree of a node contains only nodes with keys greater than the node's key.
-Both the left and right subtrees must also be binary search trees.
-*/
-#include"../CC/header.h"
-
-bool isBST(TreeNode* root, long min, long max){
-	if(root==NULL)return true;
-	if(root->val <= min || root->val >= max)return false;
-	return isBST(root->left, min, root->val) && isBST(root->right, root->val, max);
-}
-
-bool isValidBST(TreeNode* root){
-	if(root==NULL)return true;
-	return isBST(root, LONG_MIN, LONG_MAX);
-}
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    //given the root falls in (min_val, max_val)
+    bool helper(TreeNode* root, long min_val, long max_val)
+    {
+        if(root==NULL)return true;
+        //check if current node falls in the range
+        if(root->val <= min_val || root->val >=max_val)return false;
+        //node on the left path should be smaller than root->val: shrink the right boundary of left child
+        //right's value should be > root->val; shrink the left boundary 
+        return helper(root->left, min_val, root->val) && helper(root->right, root->val, max_val);
+        
+    }
+    bool isValidBST(TreeNode* root) {
+        //use LONG type for case of root_val == INT_MIN or INT_MAX
+        return helper(root, LONG_MIN, LONG_MAX);
+    }
+};
