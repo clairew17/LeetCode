@@ -1,6 +1,6 @@
 #include"../CC/header.h"
 
-class Solution {
+class Solution1 {
 public:
     int maxProfit(vector<int>& prices) {
         int n = prices.size();
@@ -21,11 +21,50 @@ public:
     }
 };
 
+//use state machine k*2 KBuy(K-1)Buy
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        int k = 2;
+        int n = prices.size();
+        if(n<2 || k<1) return 0;
+        
+        vector<vector<int>>buffer1(k, {INT_MIN, 0});
+        vector<vector<int>>buffer2(k, {INT_MIN, 0});
+        int maxProfit = 0;
+
+        for(int i = 0;i<n;i++){
+            for(int j = 0; j<k; j++){
+                if(j==0){//buy 1
+                    buffer2[j][0] = max(buffer1[j][0], -prices[i]);
+                }else{
+                    buffer2[j][0] = max(buffer1[j][0], buffer1[j-1][1]-prices[i]);
+                }
+                // j buy/j sell = max(last time jBuyjSell, last time jBuy(j-1)Sell + sell Price[i])
+                buffer2[j][1] = max(buffer1[j][1], buffer1[j][0]+prices[i]);
+                maxProfit = max(maxProfit, buffer2[j][1]);
+            }
+            swap(buffer2, buffer1);
+            //buffer2.clear();
+        }
+
+        /*for(int j = 0; j<k; j++){
+            cout << buffer1[j][0] <<','<< buffer1[j][1] << endl;
+            maxProfit = max(maxProfit, buffer1[j][1]);
+        }*/
+        return maxProfit;
+    }
+};
+
+
+
 int main()
 {
-	int arr[] = {6,1,3,2,4,7};
+	int arr[] = {6,1,3,2,7,4,5};
 	vector<int>prices;
-	for(int i=0;i<sizeof(arr)/sizeof(int);i++)prices.push_back(arr[i]);
+	for(int i=0;i<sizeof(arr)/sizeof(int);i++)
+        prices.push_back(arr[i]);
+
 	cout << "Input:\t"; PrintVector(prices);
 
 	Solution sol;
