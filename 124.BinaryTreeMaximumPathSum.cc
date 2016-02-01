@@ -17,3 +17,37 @@ int maxPathSum(TreeNode* root) {
 	MaxToRoot(root, MaxSum);
 	return MaxSum;
 }
+
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+    int maxToRoot(TreeNode *root, int &res) {
+        if (!root) return 0;
+        //dfs
+        //maximal path sum including left child
+        int l = maxToRoot(root->left, res);
+        int r = maxToRoot(root->right, res);
+        
+        if (l < 0) l = 0;
+        if (r < 0) r = 0;
+        //path including root
+        if (l + r + root->val > res)
+            res = l + r + root->val;
+        //return max sum including root
+        return root->val += max(l, r);
+    }
+public:
+    int maxPathSum(TreeNode *root) {
+        int max = INT_MIN;
+        maxToRoot(root, max);
+        return max;
+    }
+};
