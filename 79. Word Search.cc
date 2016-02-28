@@ -41,3 +41,41 @@ public:
         return false;
     }
 };
+
+
+class Solution {
+public:
+    vector<pair<int,int>>dir={{0,1},{0,-1},{1,0},{-1,0}};
+    bool dfs(vector<vector<char>>& board, int i, int j, string word, int ind){
+        if(ind==word.size())return true;
+        if(word[ind] != board[i][j])return false;
+        char c = board[i][j];
+        board[i][j] = '\0';
+        ind++;
+        //check if reach the end of string after incrementing ind
+        if(ind==word.size())return true;
+        
+        for(auto d : dir){
+            int x = d.first +i, y = d.second + j;
+            if(x>=0 && x<board.size() && y>=0 && y<board[0].size()){
+                if( dfs(board, x, y, word, ind) == true)return true;
+            }
+        }
+        //recover
+        board[i][j] = c;
+        return false;
+        
+    }
+    bool exist(vector<vector<char>>& board, string word) {
+        int row = board.size();if(row<1)return false;
+        int col = board[0].size();
+        
+        for(int i=0;i<row;i++){
+            for(int j=0;j<col;j++){
+                if( dfs(board, i, j, word, 0) == true)
+                    return true;
+            }
+        }
+        return false;
+    }
+};

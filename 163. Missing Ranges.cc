@@ -17,3 +17,34 @@
         }
         return result;
     }
+
+
+class Solution {
+public:
+    vector<string> findMissingRanges(vector<int>& nums, int lower, int upper) {
+        vector<string>res;
+        long pre = lower-1;
+        int ms,me;
+        bool is_miss = false;
+        for(auto num:nums){
+            if(num!=pre+1){//start of missing range
+                ms = pre+1;
+                me = num-1;
+                string range = to_string(ms);
+                if(me!=ms) range += ("->"+to_string(me));
+                res.push_back(range);
+            }
+            //record the last num
+            pre = num;
+        }
+        //for the last missing range
+        if(pre!=upper){
+            ms = pre+1;
+            me = upper;
+            string range = to_string(ms);
+            if(me!=ms) range += ("->"+to_string(me));
+            res.push_back(range);
+        }
+        return res;
+    }
+};

@@ -58,6 +58,49 @@ public:
 
 
 
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        int n = prices.size();
+        int k = 2;//trans number
+        
+        vector<int>hold(k+1,INT_MIN);
+        vector<int>release(k+1, 0);
+        int maxProfit = 0;
+        for(int i=0;i<n;i++){
+            for(int j=k;j>0;j--){
+                hold[j] = max(hold[j], release[j-1]-prices[i]);
+                release[j] = max(release[j], hold[j]+prices[i]);
+                maxProfit = max(maxProfit, release[j]);
+            }
+        }
+        return maxProfit;
+        
+    }
+};
+
+
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        int n = prices.size();
+
+        vector<int>state(4,0);
+        state[0] = state[2] = INT_MIN;
+        
+        for(int i=0;i<n;i++){
+            state[3] = max(state[3], state[2]+prices[i]);
+            state[2] = max(state[2], state[1]-prices[i]);
+            state[1] = max(state[1], state[0]+prices[i]);
+            state[0] = max(state[0], -prices[i]);
+            
+        }
+        
+        return max(state[3], state[1]);
+        
+    }
+};
+
 int main()
 {
 	int arr[] = {6,1,3,2,7,4,5};

@@ -1,7 +1,7 @@
 //295. Find Median from Data Stream.
+#include"../CC/header.h"
 
-
-class MedianFinder {
+class MedianFinder1 {
 private:
     priority_queue<int> MaxQ; // max_heap for the first half; ALL num is less than its top
     priority_queue<int, std::vector<int>, std::greater<int> > MinQ; // min_heap for the second half
@@ -41,3 +41,62 @@ public:
         }
     }
 };
+
+
+class MedianFinder {
+    priority_queue<int>maxHeap;
+    priority_queue<int, vector<int>, greater<int>>minHeap;
+public:
+
+    // Adds a number into the data structure.
+    void addNum(int num) {
+        if(maxHeap.empty() || num <= maxHeap.top()){
+            maxHeap.push(num);
+        }else{
+            minHeap.push(num);
+        }
+       
+        
+        //balance
+        if(minHeap.size() > maxHeap.size()+1){
+            maxHeap.push(minHeap.top());
+            minHeap.pop();
+        }else if(maxHeap.size() > minHeap.size()+1){
+            minHeap.push(maxHeap.top());
+            maxHeap.pop();
+        }
+        
+    }
+
+    // Returns the median of current data stream
+    double findMedian() {
+
+        if(maxHeap.size() == minHeap.size()){
+            if(maxHeap.size()==0)//no valid number
+                return -1;
+            else 
+                return double(minHeap.top() + maxHeap.top())/2;
+        }else if(maxHeap.size() > minHeap.size()){
+            return maxHeap.top();
+        }else{
+            return minHeap.top();
+        }
+        
+    }
+};
+
+int main(){
+    //priority_queue<int>maxHeap;
+    priority_queue<int, vector<int>, greater<int>>minHeap;
+    int arr[] ={4,4};//,2,1,6,9};
+    int sz = sizeof(arr)/sizeof(int);
+
+    MedianFinder MF;
+    for(int i = 0;i< sz; i++){
+        MF.addNum(arr[i]);
+        cout <<MF.findMedian() << endl;
+    }
+
+
+    return 0;
+}

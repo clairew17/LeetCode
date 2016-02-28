@@ -38,6 +38,36 @@ ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
     return p1;
 }
 
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    //TIME: O(n+m) space O(n);
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+        unordered_set<ListNode*>visited;
+        ListNode *cur = headA;
+        while(cur){
+            visited.insert(cur);
+            cur = cur->next;
+        }
+        cur = headB;
+        while(cur){
+            if(visited.find(cur) != visited.end()){
+                break;
+            }
+            cur = cur->next;
+        }
+        return cur;
+    }
+};
+
 int main(){
 	srand(time(NULL));
 	int m = 5, n =2;

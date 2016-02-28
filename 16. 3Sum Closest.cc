@@ -1,5 +1,5 @@
 //with sorting
-
+//time: O(nlogn) + O(n^2)
 class Solution {
 public:
     int threeSumClosest(vector<int>& nums, int target) {
@@ -27,7 +27,7 @@ public:
     }
 };
 
-//brute force
+//time O(n^3) brute force
 class Solution {
 public:
     int threeSumClosest(vector<int>& nums, int target) {
